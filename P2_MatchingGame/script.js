@@ -51,13 +51,20 @@ firstClick = -1;
 secondClcik = -1;
 
 pairs = 4;
+matches = 0;
 cardHues = [];
 cardOrder = [];
 staticHues = [];
 
 function initialize() {
+    pairs = 4;
+    matches = 0;
+    cardHues = [];
+    cardOrder = [];
+    staticHues = [];
+    let startingHue = Math.round(Math.random() * 360);
     for (let i = 0; i < pairs; i ++) {
-        cardHues.push(Math.round(Math.random() * 360));
+        cardHues.push((startingHue + i * Math.round(360 / pairs)) % 360);
     }
 
     while (cardOrder.length < pairs * 2) {
@@ -95,9 +102,7 @@ function checkCard(index) {
         } else {
             secondClick = index;
             revealCard(secondClick);
-            tryMatch();
-            firstClick = -1;
-            secondClick = -1;
+            setTimeout(process, 700);
         }
     } else {
         firstClick = index;
@@ -105,14 +110,34 @@ function checkCard(index) {
     }
 }
 
+function disableCard(index) {
+    let card = document.getElementById(index.toString());
+    card.setAttribute("onclick", "");
+    card.classList.remove("hidden");
+    revealCard(index);
+}
+
 function tryMatch() {
     if (cardOrder[firstClick] == cardOrder[secondClick]) {
-        console.log("match!");
+        disableCard(firstClick);
+        disableCard(secondClick);
+        matches += 1;
     } else {
-        console.log("not a match");
+        hideCard(firstClick);
+        hideCard(secondClick);
     }
-    hideCard(firstClick);
+
+    if (matches == pairs) {
+        alert("You Win!");
+    }
+
+    firstClick = -1;
+    secondClick = -1;
+}
+
+function process() {
     hideCard(secondClick);
+    tryMatch();
 }
 
 function revealCard(index) {
@@ -122,6 +147,7 @@ function revealCard(index) {
 }
 
 function hideCard(index) {
+    console.log(index);
     let card = document.getElementById(index.toString());
     card.removeAttribute("style");
     card.classList.add("hidden");
@@ -142,4 +168,12 @@ function debugReveal() {
     for (let i = 0; i < cards.length; i ++) {
         revealCard(cards[i].id);
     }
+}
+
+function reset() {
+    let cards = document.getElementsByClassName("card");
+    while (cards.length > 0) {
+        cards[0].remove();
+    }
+    initialize();
 }

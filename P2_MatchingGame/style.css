@@ -15,6 +15,7 @@ body {
     width: 80%;
     height: auto;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 

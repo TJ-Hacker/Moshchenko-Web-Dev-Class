@@ -64,6 +64,9 @@ function initialize() {
     cardHues = [];
     cardOrder = [];
     staticHues = [];
+
+    score = 0;
+
     let startingHue = Math.round(Math.random() * 360);
     for (let i = 0; i < pairs; i ++) {
         cardHues.push((startingHue + i * Math.round(360 / pairs)) % 360);
@@ -94,6 +97,7 @@ function initialize() {
     }
 
     staticHues = cardOrder;
+    updateScore();
 }
 
 function checkCard(index) {

@@ -18,6 +18,10 @@ body {
     flex-wrap: wrap;
 }
 
+#score {
+    font-size: 200px;
+}
+
 .card {
     width: 300px;
     height: 300px;

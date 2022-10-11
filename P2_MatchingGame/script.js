@@ -50,14 +50,16 @@
 firstClick = -1;
 secondClcik = -1;
 
-pairs = 4;
+pairs = 0;
 matches = 0;
 cardHues = [];
 cardOrder = [];
 staticHues = [];
 
+score = 0;
+
 function initialize() {
-    pairs = 4;
+    pairs = 8;
     matches = 0;
     cardHues = [];
     cardOrder = [];
@@ -95,6 +97,7 @@ function initialize() {
 }
 
 function checkCard(index) {
+    score += 1;
     if (firstClick > -1) {
         if (firstClick == index) {
             hideCard(index);
@@ -108,6 +111,7 @@ function checkCard(index) {
         firstClick = index;
         revealCard(index);
     }
+    updateScore();
 }
 
 function disableCard(index) {
@@ -115,6 +119,11 @@ function disableCard(index) {
     card.setAttribute("onclick", "");
     card.classList.remove("hidden");
     revealCard(index);
+}
+
+function updateScore() {
+    let counter = document.getElementById("score");
+    counter.innerHTML = "Score: " + score;
 }
 
 function tryMatch() {

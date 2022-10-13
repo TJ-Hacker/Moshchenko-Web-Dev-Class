@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200&family=Roboto:wght@300&display=swap');
+
+html {
+  background-color: #1c1c1c;
+}
+
+#main {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: white;
+
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto Mono', monospace;
+}
+
+#title {
+  font-size: 100px;
+}
+
+h3 {
+  margin-bottom: 5%;
+}
+
+#guessBox {
+  width: auto;
+  height: 30%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: green; */
+
+  border-width: 5px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  padding: 10px;
+  border-radius: 40px;
+
+  margin-bottom: 7.5%;
+}
+
+.guess {
+  display: inherit;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  margin: 5px;
+  
+  border-width: 5px;
+  border-style: solid;
+  border-color: #262626;
+  border-radius: 10%;
+
+  font-weight: bold;
+}
+
+.cold {
+  background-color: #226E6E;
+}
+
+.hot {
+  background-color: #6E2222;
+}
+
+.win {
+  background-color: #226e27;
+  border-color: white;
+}
+
+.hide {
+  display: none;
+}
+
+#guess {
+  text-align: center;
+}
+
+#guess::placeholder {
+  text-align: center; 
+}
+
+#resetButton {
+  border-width: 5px;
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px;
+
+  width: 150px;
+  height: 50px;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Project #1</title>
+  <link rel="stylesheet" href="./style.css"/>
+  <script src="./script.js"></script>
+</head>
+<body onload="initialize();">
+  <div id="main">
+    <div id="title">
+      Guess The Number!
+    </div>
+    <h3>
+      hint: it's between 0 and 100 <br/>hot means your guess is too high (red)<br/>cold is too low (blue)
+    </h3>
+    <h2>
+      Previous Guesses
+    </h2>
+    <div id="guessBox">
+      <input type="text" id="guess" class="guess" placeholder="Enter Your Guess"/>
+    </div>
+    <button id="resetButton" onclick="reset();">Restart</button>
+  </div>
+</body>
+</html>

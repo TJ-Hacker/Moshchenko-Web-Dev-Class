@@ -8,6 +8,21 @@ body {
   font-family: 'Roboto Mono', monospace;
 }
 
+.tile {
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 5px;
+  margin: 2.5px;
+
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #main {
     display: flex;
     align-items: center;
@@ -15,7 +30,15 @@ body {
 }
 
 #tiles {
-    display: flex;
+    display: grid;
     align-items: center;
+
+    grid-template-columns: repeat(4, auto);
+    align-items: stretch;
+
     justify-content: center;
+}
+
+#empty {
+
 }

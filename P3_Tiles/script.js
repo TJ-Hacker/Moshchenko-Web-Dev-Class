@@ -1,5 +1,5 @@
 var gridSize = 4;
-var numTiles = grid * grid - 1;
+var numTiles = gridSize * gridSize - 1;
 
 var grid = document.getElementById("tiles");
 var tiles = grid.children;
@@ -23,11 +23,46 @@ function initialize() {
 }
 
 function move(tile) {
-    tiles = grid.children;
-    console.log(tile.toString());
+    if ( checkAdj(tile) > -1 ) {
+        emptyClone = document.getElementById("empty").cloneNode(true);
+        tileClone = document.getElementById(tile).cloneNode(true);
+        tileIndex = getIndex(tile);
+        emptyIndex = getIndex("empty");
+
+        if (emptyIndex == 0 && tileIndex == 0) {
+            console.log("1");
+            grid.removeChild(document.getElementById("empty"));
+
+            console.log(tiles);
+            tiles[emptyIndex].after(emptyClone);
+        } else if (tileIndex == numTiles && emptyIndex == numTiles - 1) {
+            console.log("2");
+            grid.removeChild(document.getElementById("empty"));
+            document.getElementById(tile).after(emptyClone);
+
+        } else if (emptyIndex != numTiles) {
+            console.log("3")
+            grid.removeChild(document.getElementById(tile));
+            tiles[emptyIndex].before(tileClone);
+            grid.removeChild(document.getElementById("empty"));
+            tiles[tileIndex].before(emptyClone);
+        // }
+        // else if (tileIndex < numTiles) {
+        //     grid.replaceChild(document.getElementById("empty"), document.getElementById(tile));
+        //     tiles[emptyIndex-1].after(tileClone);
+
+        } else {
+            console.log("4");
+            grid.removeChild(document.getElementById("empty"));
+            document.getElementById(tile).before(emptyClone);
+            grid.removeChild(document.getElementById(tile));
+            grid.append(tileClone);
+        }
+    }
 }
 
 function checkAdj(tile) {
+    grid = document.getElementById("tiles");
     tiles = grid.children;
     let index = getIndex(tile);
     
@@ -43,7 +78,11 @@ function checkAdj(tile) {
         return index-1;
     }
 
-    // if (
+    if (index <= numTiles - gridSize && tiles[index + 4].id == "empty") {
+        return index+4;
+    }
+
+    return -1;
 }
 
 function getIndex(tile) {

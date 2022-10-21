@@ -3,9 +3,9 @@ var numTiles = gridSize * gridSize - 1;
 
 var grid = document.getElementById("tiles");
 var tiles = grid.children;
+var getIndex = (tile) => Array.from(tiles).indexOf(document.getElementById(tile));
 
 function initialize() {
-
     for (let i = 1; i <= numTiles; i ++) {
         let tile = document.createElement("div");
         tile.classList.add("tile");
@@ -22,41 +22,64 @@ function initialize() {
     grid.appendChild(empty);
 }
 
+// function move(tile) {
+//     if ( checkAdj(tile) > -1 ) {
+//         emptyClone = document.getElementById("empty").cloneNode(true);
+//         tileClone = document.getElementById(tile).cloneNode(true);
+//         tileIndex = getIndex(tile);
+//         emptyIndex = getIndex("empty");
+
+//         if (emptyIndex == 0 && tileIndex == 0) {
+//             grid.removeChild(document.getElementById("empty"));
+
+//             console.log(tiles);
+//             tiles[emptyIndex].after(emptyClone);
+//         } else if (tileIndex == numTiles && emptyIndex == numTiles - 1) {
+//             grid.removeChild(document.getElementById("empty"));
+//             document.getElementById(tile).after(emptyClone);
+
+//         } else if (emptyIndex != numTiles) {
+//             grid.removeChild(document.getElementById(tile));
+//             tiles[emptyIndex].before(tileClone);
+//             grid.removeChild(document.getElementById("empty"));
+//             tiles[tileIndex].before(emptyClone);
+//         } else {
+//             grid.removeChild(document.getElementById("empty"));
+//             document.getElementById(tile).before(emptyClone);
+//             grid.removeChild(document.getElementById(tile));
+//             grid.append(tileClone);
+//         }
+//     }
+// }
+
 function move(tile) {
-    if ( checkAdj(tile) > -1 ) {
-        emptyClone = document.getElementById("empty").cloneNode(true);
-        tileClone = document.getElementById(tile).cloneNode(true);
-        tileIndex = getIndex(tile);
-        emptyIndex = getIndex("empty");
+    if (checkAdj(tile) > -1) {
+        let emptyClone = document.getElementById("empty").cloneNode();
+        let tileClone = document.getElementById(tile).cloneNode(true);
+        let emptyIndex = getIndex("empty");
+        let tileIndex = getIndex(tile);
+        let tileDiff = emptyIndex - tileIndex;
 
-        if (emptyIndex == 0 && tileIndex == 0) {
-            console.log("1");
-            grid.removeChild(document.getElementById("empty"));
-
-            console.log(tiles);
-            tiles[emptyIndex].after(emptyClone);
-        } else if (tileIndex == numTiles && emptyIndex == numTiles - 1) {
-            console.log("2");
-            grid.removeChild(document.getElementById("empty"));
+        if (tileDiff == 1) {
+            // Tile to the left
+            document.getElementById(tile).remove();
+            document.getElementById("empty").after(tileClone);
+        } else if (tileDiff == -1) {
+            // Tile to the right
+            document.getElementById("empty").remove();
             document.getElementById(tile).after(emptyClone);
-
-        } else if (emptyIndex != numTiles) {
-            console.log("3")
-            grid.removeChild(document.getElementById(tile));
-            tiles[emptyIndex].before(tileClone);
-            grid.removeChild(document.getElementById("empty"));
-            tiles[tileIndex].before(emptyClone);
-        // }
-        // else if (tileIndex < numTiles) {
-        //     grid.replaceChild(document.getElementById("empty"), document.getElementById(tile));
-        //     tiles[emptyIndex-1].after(tileClone);
-
-        } else {
-            console.log("4");
-            grid.removeChild(document.getElementById("empty"));
+        } else if (tileDiff == gridSize) {
+            // Tile on top
+            document.getElementById("empty").remove();
             document.getElementById(tile).before(emptyClone);
-            grid.removeChild(document.getElementById(tile));
-            grid.append(tileClone);
+            document.getElementById(tile).remove();
+            tiles[emptyIndex-1].after(tileClone);
+        } else if (tileDiff == -gridSize) {
+            // Tile on bottom
+            document.getElementById("empty").remove();
+            document.getElementById(tile).before(emptyClone);
+            document.getElementById(tile).remove();
+            tiles[emptyIndex].before(tileClone);
         }
     }
 }
@@ -85,12 +108,26 @@ function checkAdj(tile) {
     return -1;
 }
 
-function getIndex(tile) {
-    tiles = grid.children;
-    for (let i = 0; i < grid.children.length; i ++) {
-        if (tiles[i].id == tile) {
-            return i;
-        }
+function inOrder() {
+    let last = parseInt(tiles[0].id);
+    for (let tile in Array.from(tiles)) {
+        // console.log(tiles[tile].id);
+        // console.log((parseInt(tiles[tile].id) >= last) || (tiles[tile].id == "empty" && last == numTiles));
+        console.log(tile + ", " + parseInt(tiles[tile].id));
+
+        // -------------BROKEN----------------
+        last = ((parseInt(tiles[tile].id) >= last)  || (tiles[tile].id == "empty" && last == numTiles) ? parseInt(tiles[tile].id) : numTiles+1);
     }
-    return -1;
+    console.log(last);
+    return (last == numTiles);
 }
+
+// function getIndex(tile) {
+//     tiles = grid.children;
+//     for (let i = 0; i < grid.children.length; i ++) {
+//         if (tiles[i].id == tile) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// }

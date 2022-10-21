@@ -115,8 +115,9 @@ function inOrder() {
         // console.log((parseInt(tiles[tile].id) >= last) || (tiles[tile].id == "empty" && last == numTiles));
         console.log(tile + ", " + parseInt(tiles[tile].id));
 
-        // -------------BROKEN----------------
-        last = ((parseInt(tiles[tile].id) >= last)  || (tiles[tile].id == "empty" && last == numTiles) ? parseInt(tiles[tile].id) : numTiles+1);
+        if (tile < numTiles) {
+            last = ((parseInt(tiles[tile].id) >= last) ? parseInt(tiles[tile].id) : numTiles+1);
+        }
     }
     console.log(last);
     return (last == numTiles);

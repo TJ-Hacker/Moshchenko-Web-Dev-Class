@@ -3,9 +3,20 @@ var numTiles = gridSize * gridSize - 1;
 
 var grid = document.getElementById("tiles");
 var tiles = grid.children;
-var getIndex = (tile) => Array.from(tiles).indexOf(document.getElementById(tile));
+var getIndex = (tile) => Array.from(tiles).indexOf(tile);
+
+var moves = 0;
+var playing = false;
 
 function initialize() {
+    moves = 0;
+    document.getElementById("moves").innerHTML = "moves: " + moves.toString();
+    playing = false;
+
+    while (grid.firstChild) {
+        grid.removeChild(grid.firstChild);
+    }
+
     for (let i = 1; i <= numTiles; i ++) {
         let tile = document.createElement("div");
         tile.classList.add("tile");
@@ -18,46 +29,37 @@ function initialize() {
 
     let empty = document.createElement("div");
     empty.setAttribute("id", "empty");
+    grid.style.gridTemplateColumns = "repeat(" + gridSize.toString() + ", auto)";
 
     grid.appendChild(empty);
 }
 
-// function move(tile) {
-//     if ( checkAdj(tile) > -1 ) {
-//         emptyClone = document.getElementById("empty").cloneNode(true);
-//         tileClone = document.getElementById(tile).cloneNode(true);
-//         tileIndex = getIndex(tile);
-//         emptyIndex = getIndex("empty");
+function winColours() {
+    let numColours = gridSize * 2 - 1;
 
-//         if (emptyIndex == 0 && tileIndex == 0) {
-//             grid.removeChild(document.getElementById("empty"));
+    let startingCol = Math.floor(Math.random() * 360);
 
-//             console.log(tiles);
-//             tiles[emptyIndex].after(emptyClone);
-//         } else if (tileIndex == numTiles && emptyIndex == numTiles - 1) {
-//             grid.removeChild(document.getElementById("empty"));
-//             document.getElementById(tile).after(emptyClone);
+    tiles[numTiles].classList.add("tile");
 
-//         } else if (emptyIndex != numTiles) {
-//             grid.removeChild(document.getElementById(tile));
-//             tiles[emptyIndex].before(tileClone);
-//             grid.removeChild(document.getElementById("empty"));
-//             tiles[tileIndex].before(emptyClone);
-//         } else {
-//             grid.removeChild(document.getElementById("empty"));
-//             document.getElementById(tile).before(emptyClone);
-//             grid.removeChild(document.getElementById(tile));
-//             grid.append(tileClone);
-//         }
-//     }
-// }
+    for (let i = 0; i < tiles.length; i ++) {
+        // Column Number Expression
+        // parseInt(getIndex(tiles[i])) % gridSize
+
+        // Row Number Expression
+        // Math.floor(parseInt(getIndex(tiles[i])) / gridSize)
+
+
+        let colour = (parseInt(getIndex(tiles[i])) % gridSize) + (Math.floor(parseInt(getIndex(tiles[i])) / gridSize)); 
+        tiles[i].style.borderColor = "hsl(" + ((startingCol + Math.floor((360 / numColours) * colour)) % 360).toString() + "deg 50% 50%)";
+    }
+}
 
 function move(tile) {
     if (checkAdj(tile) > -1) {
         let emptyClone = document.getElementById("empty").cloneNode();
         let tileClone = document.getElementById(tile).cloneNode(true);
-        let emptyIndex = getIndex("empty");
-        let tileIndex = getIndex(tile);
+        let emptyIndex = getIndex(document.getElementById("empty"));
+        let tileIndex = getIndex(document.getElementById(tile));
         let tileDiff = emptyIndex - tileIndex;
 
         if (tileDiff == 1) {
@@ -81,13 +83,32 @@ function move(tile) {
             document.getElementById(tile).remove();
             tiles[emptyIndex].before(tileClone);
         }
+
+        if (playing) {
+            update();
+        }
+        return true;
+    }
+    return false;
+}
+
+function start() {
+    playing = true;
+}
+
+function update() {
+    moves ++;
+    document.getElementById("moves").innerHTML = "moves: " + moves.toString();
+    if (inOrder()) {
+        winColours();
+        document.getElementById("moves").innerHTML = "you win :)        it took you " + moves.toString() + " tries";
     }
 }
 
 function checkAdj(tile) {
     grid = document.getElementById("tiles");
     tiles = grid.children;
-    let index = getIndex(tile);
+    let index = getIndex(document.getElementById(tile));
     
     if (index >= gridSize && tiles[index - gridSize].id == "empty") {
         return index-gridSize;
@@ -101,34 +122,30 @@ function checkAdj(tile) {
         return index-1;
     }
 
-    if (index <= numTiles - gridSize && tiles[index + 4].id == "empty") {
-        return index+4;
+    if (index <= numTiles - gridSize && tiles[index + gridSize].id == "empty") {
+        return index+gridSize;
     }
 
     return -1;
 }
 
+function shuffle(num) {
+    playing = false;
+    let shuffles = 0;
+    while (shuffles < num) {
+        if (move(tiles[Math.floor(Math.random() * (numTiles + 1))].id)) {
+            shuffles ++;
+        }
+    }
+    start();
+}
+
 function inOrder() {
     let last = parseInt(tiles[0].id);
     for (let tile in Array.from(tiles)) {
-        // console.log(tiles[tile].id);
-        // console.log((parseInt(tiles[tile].id) >= last) || (tiles[tile].id == "empty" && last == numTiles));
-        console.log(tile + ", " + parseInt(tiles[tile].id));
-
         if (tile < numTiles) {
             last = ((parseInt(tiles[tile].id) >= last) ? parseInt(tiles[tile].id) : numTiles+1);
         }
     }
-    console.log(last);
     return (last == numTiles);
 }
-
-// function getIndex(tile) {
-//     tiles = grid.children;
-//     for (let i = 0; i < grid.children.length; i ++) {
-//         if (tiles[i].id == tile) {
-//             return i;
-//         }
-//     }
-//     return -1;
-// }

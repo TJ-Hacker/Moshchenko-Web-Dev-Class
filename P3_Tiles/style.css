@@ -23,22 +23,40 @@ body {
   align-items: center;
 }
 
+.tile:hover {
+  cursor: pointer;
+}
+
+.button {
+  margin: 10px;
+  padding: 4px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  border-color: #dedede;
+  cursor: pointer;
+}
+
 #main {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+#moves {
+  margin: 10px 0px;
 }
 
 #tiles {
-    display: grid;
-    align-items: center;
+  display: grid;
+  align-items: center;
 
-    grid-template-columns: repeat(4, auto);
-    align-items: stretch;
+  align-items: stretch;
 
-    justify-content: center;
-}
-
-#empty {
-
+  justify-content: center;
 }

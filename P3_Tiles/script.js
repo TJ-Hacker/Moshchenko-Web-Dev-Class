@@ -10,7 +10,7 @@ var playing = false;
 
 function initialize() {
     moves = 0;
-    document.getElementById("moves").innerHTML = "moves: " + moves.toString();
+    document.getElementById("moves").innerHTML = "clicks: " + moves.toString();
     playing = false;
 
     while (grid.firstChild) {
@@ -98,10 +98,10 @@ function start() {
 
 function update() {
     moves ++;
-    document.getElementById("moves").innerHTML = "moves: " + moves.toString();
+    document.getElementById("moves").innerHTML = "click: " + moves.toString();
     if (inOrder()) {
         winColours();
-        document.getElementById("moves").innerHTML = "you win :)        it took you " + moves.toString() + " tries";
+        document.getElementById("moves").innerHTML = "you win :)        it took you " + moves.toString() + " clicks";
     }
 }
 

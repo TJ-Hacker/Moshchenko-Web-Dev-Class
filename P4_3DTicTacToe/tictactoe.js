@@ -1,5 +1,5 @@
 
-//grid[row][column][layer]
+// grid[row][column][layer]
 grid = [];
 lastMove = [];
 const gridSize = 3;
@@ -13,6 +13,7 @@ for (let i = 0; i < gridSize; i ++) {
 
 
 function move(player, tile) {
+    let second = false;
     // Check if the tile was occupied by the other player last
     if (tile[0] == lastMove[0] && tile[1] == lastMove[1]) {
         return -1;
@@ -23,9 +24,12 @@ function move(player, tile) {
     }
     if (grid[tile[0]][tile[1]].length > 0) {
         grid[tile[0]][tile[1]][1] = player;
+        second = true;
     } else {
         grid[tile[0]][tile[1]][0] = player;
     }
+
+    addPiece(player, tile, second);
     lastMove = tile;
     return grid[tile[0]][tile[1]];
 }

@@ -3,14 +3,32 @@
 grid = [];
 lastMove = [];
 const gridSize = 3;
+curPlayer = "X";
+winner = -1;
 
-for (let i = 0; i < gridSize; i ++) {
-    grid[i] = [];
-    for (let j = 0; j < gridSize; j ++) {
-        grid[i][j] = [];
+
+function advance() {
+    if (checkWinner("O") != -1 || checkWinner("X") != -1) {
+        if (checkWinner("O") != -1) {
+            winner = "O";
+        } else {
+            winner = "X";
+        }
+    }
+
+    if (winner != -1) {
+        cont = false;
+        winAnimation();
+    }
+
+    // curPlayer = (curPlayer == "X") ? "O" : "O";
+
+    if (curPlayer == "X") {
+        curPlayer = "O";
+    } else {
+        curPlayer = "X";
     }
 }
-
 
 function move(player, tile) {
     let second = false;
@@ -31,6 +49,7 @@ function move(player, tile) {
 
     addPiece(player, tile, second);
     lastMove = tile;
+    advance();
     return grid[tile[0]][tile[1]];
 }
 

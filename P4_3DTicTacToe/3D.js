@@ -1,7 +1,6 @@
 
 // Setup
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -28,7 +27,7 @@ hori.translate(12, 0, 0);
 const hori2 = new THREE.BoxGeometry(2, 2, groundLength);
 hori2.translate(-12, 0, 0);
 
-const X_Geo = new THREE.SphereGeometry(0.5, 32, 16);
+
 const O_Geo = new THREE.TorusGeometry(8, 2, 12, 40);
 O_Geo.rotateX(Math.PI / 2);
 
@@ -58,11 +57,19 @@ const v2 = new THREE.Mesh(vert2, Ground_Mat);
 const h1 = new THREE.Mesh(hori, Ground_Mat);
 const h2 = new THREE.Mesh(hori2, Ground_Mat);
 
+
+
+
 const collider = new THREE.Mesh(colliderPlane, invis_Mat);
 collider.layers.set(5);
 
 xP = [];
 oP = [];
+
+
+const CameraFocalPoint = new THREE.Object3D();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+CameraFocalPoint.add(camera);
 
 scene.add(v1);
 scene.add(v2);
@@ -71,18 +78,22 @@ scene.add(h2);
 scene.add(mainPointL);
 scene.add(light);
 scene.add(collider);
+scene.add(CameraFocalPoint);
 
-camera.position.z = 75;
+camera.translateZ(55);
+camera.translateY(55);
+camera.rotation.x = -1 * Math.PI / 4;
 
 function animate() {
     requestAnimationFrame(animate);
 
-    raycaster.setFromCamera( pointer, camera );
-    const intersects = raycaster.intersectObjects( scene.children );
+    // raycaster.setFromCamera( pointer, camera );
+    // const intersects = raycaster.intersectObjects( scene.children );
 
-    if (intersects.length > 0) {
-        console.log(intersects[0].point);
-    }
+    // if (intersects.length > 0) {
+    //     // console.log(`X: ${intersects[0].point.x}, Y: ${intersects[0].point.z}`);
+    //     console.log(clampPoint(intersects[0].point.x, intersects[0].point.z));
+    // }
 
     renderer.render(scene, camera);
 }
@@ -94,41 +105,118 @@ function onPointerMove( event ) {
 	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 }
 
+function shootRay(event) {
+    raycaster.setFromCamera( pointer, camera );
+    const intersects = raycaster.intersectObjects( scene.children );
+
+    if (intersects.length > 0) {
+        // console.log(`X: ${intersects[0].point.x}, Y: ${intersects[0].point.z}`);
+        // console.log();
+        move(curPlayer, clampPoint(intersects[0].point.x, intersects[0].point.z));
+    }
+}
+
 addEventListener("mousemove", (event) => {
-    if (event.buttons == 1) {
-        cameraMovement(event.movementX, event.movementY);
+    if (cont) {
+        if (event.buttons == 1) {
+            cameraMovement(event.movementX, event.movementY);
+        }
     }
 });
 
 addEventListener("pointermove", (event) => {
-    onPointerMove(event);
+    if (cont) {
+        onPointerMove(event);
+    }
+});
+
+addEventListener("click", (event) => {
+    if (cont) {
+        shootRay(event);
+    }
 });
 
 function cameraMovement(movementX, movementY) {
-    scene.rotation.y += movementX / 200;
-    scene.rotation.x += movementY / 200;
+    // scene.rotation.y += movementX / 200;
+    // scene.rotation.x += movementY / 200;
+    CameraFocalPoint.rotation.y += ((-1 * movementX / 500) % (Math.PI * 2));
+    // CameraFocalPoint.rotateX(-1 * movementY / 200);
+    CameraFocalPoint.rotation.z = 0;
+}
+
+function clampPoint(pointX, pointY) {
+    pointX += groundLength / 2;
+    pointY += groundLength / 2;
+    return [Math.floor(pointX / (groundLength / gridSize)), Math.floor(pointY / (groundLength / gridSize))];
 }
 
 function addPiece(player, tile, second=false) {
     if (player == "X") {
-        let piece = new THREE.Mesh(X_Geo, X_Mat);
+        let piece = new THREE.Object3D();
+
+        let line1 = new THREE.BoxGeometry(4, 4, 20);
+        line1.rotateY(Math.PI / 4);
+        let m1 = new THREE.Mesh(line1, X_Mat);
+        let line2 = new THREE.BoxGeometry(4, 4, 20);
+        let m2 = new THREE.Mesh(line2, X_Mat);
+        line2.rotateY(-1 * Math.PI / 4);
+
+        piece.add(m1);
+        piece.add(m2);
+
         xP[xP.length] = piece;
         scene.add(xP[xP.length-1]);
-        xP[xP.length-1].position.x = tile[1]-1;
-        xP[xP.length-1].position.z = tile[0]-1;
+        xP[xP.length-1].position.z = (tile[1]+1) * (groundLength / gridSize) - 2*groundLength / 3;
+        xP[xP.length-1].position.x = (tile[0]+1) * (groundLength / gridSize) - 2*groundLength / 3;
         if (second) {
-            xP[xP.length-1].position.y = 1;
+            xP[xP.length-1].position.y = 10;
         }
     } else {
         let piece = new THREE.Mesh(O_Geo, O_Mat);
         oP[oP.length] = piece;
         scene.add(oP[oP.length-1]);
-        oP[oP.length-1].position.x = tile[1]-1;
-        oP[oP.length-1].position.z = tile[0]-1;
+        oP[oP.length-1].position.z = (tile[1]+1) * (groundLength / gridSize) - 2*groundLength / 3;
+        oP[oP.length-1].position.x = (tile[0]+1) * (groundLength / gridSize) - 2*groundLength / 3;
         if (second) {
-            oP[oP.length-1].position.y = 1.5;
+            oP[oP.length-1].position.y = 10;
         }
     }
 }
 
-move("O", [1, 1]);
+function winAnimation() {
+    id = setInterval(frame, 100);
+    let messageCont = document.getElementById("winMes");
+    let message = "Congrats Player " + winner + ", you won!";
+    messageCont.style.display = "block";
+    messageCont.innerHTML = "";
+    let framePos = 0;
+    function frame() {
+        if (framePos == message.length) {
+            clearInterval(id);
+        } else {
+            framePos ++;
+            // console.log(message.slice(frame, frame + 2));
+            messageCont.innerHTML += message.slice(framePos - 1, framePos);
+        }
+    }
+}
+
+function reset() {
+    grid = [];
+    lastMove = [];
+    curPlayer = "X";
+    winner = -1;
+    cont = true;
+    for (let i = 0; i < gridSize; i ++) {
+        grid[i] = [];
+        for (let j = 0; j < gridSize; j ++) {
+            grid[i][j] = [];
+        }
+    }
+
+    // while(scene.children.length > 0){ 
+    //     scene.remove(scene.children[0]); 
+    // }
+}
+
+reset();

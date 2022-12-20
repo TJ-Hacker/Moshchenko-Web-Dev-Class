@@ -118,7 +118,7 @@ function shootRay(event) {
 
 addEventListener("mousemove", (event) => {
     if (cont) {
-        if (event.buttons == 1) {
+        if (event.buttons === 1) {
             cameraMovement(event.movementX, event.movementY);
         }
     }
@@ -151,7 +151,7 @@ function clampPoint(pointX, pointY) {
 }
 
 function addPiece(player, tile, second=false) {
-    if (player == "X") {
+    if (player === "X") {
         let piece = new THREE.Object3D();
 
         let line1 = new THREE.BoxGeometry(4, 4, 20);
@@ -191,7 +191,7 @@ function winAnimation() {
     messageCont.innerHTML = "";
     let framePos = 0;
     function frame() {
-        if (framePos == message.length) {
+        if (framePos === message.length) {
             clearInterval(id);
         } else {
             framePos ++;

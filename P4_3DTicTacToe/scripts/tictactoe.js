@@ -5,9 +5,6 @@ lastMove = [];
 const gridSize = 3;
 winner = -1;
 
-alert("Welcome to 2 Layered Tic Tac Toe! Click on the slot you want to place your piece, and drag the bottom of the screen to rotate the board. Refresh to restart");
-
-
 function advance() {
     if (checkWinner("O") != -1 || checkWinner("X") != -1) {
         if (checkWinner("O") != -1) {
@@ -16,13 +13,10 @@ function advance() {
             winner = "X";
         }
     }
-
     if (winner != -1) {
         cont = false;
         winAnimation();
     }
-
-    
     if (curPlayer === "X") {
         curPlayer = "O";
     } else {
@@ -49,7 +43,6 @@ function move(player, tile) {
 
     addPiece(player, tile, second);
     lastMove = tile;
-    // cpuMove();
     advance();
     return grid[tile[0]][tile[1]];
 }
@@ -92,9 +85,7 @@ function checkWinner(player) {
     if (streak === gridSize) {
         return player;
     }
-
     streak = 0;
-
     for (let d = 0; d < gridSize; d ++) {
         if ((grid[d][gridSize-1-d][0] === player && grid[d][gridSize-1-d][1] === undefined) || grid[d][gridSize-1-d][1] === player) {
             streak ++;

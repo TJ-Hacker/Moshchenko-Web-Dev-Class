@@ -6,11 +6,6 @@ body {
     font-family: 'Roboto Mono', serif;
 }
 
-@keyframes saturateEffect {
-    from {filter: saturate(10%);}
-    to {filter: saturate(100%);}
-}
-
 html {
     overflow: hidden;
 }
@@ -24,12 +19,38 @@ body {
 }
 
 h1 {
-    padding-top: 10%;
+    /* padding-top: 10%; */
     text-align: center;
+    font-weight: bold;
 }
 
 
+@keyframes floating {
+    0% {
+        padding-top: 7%;
+        padding-bottom: 1%;
+    }
+
+    100% {
+        padding-top: 8%;
+        padding-bottom: 0%;
+    }
+}
+
+#title {
+    animation-name: floating;
+    animation-duration: 1.5s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
 /* ----------------------------------- Player Selection ----------------------------------- */
+
+@keyframes saturateEffect {
+    from {filter: saturate(10%);}
+    to {filter: saturate(100%);}
+}
 
 #playerSel {
     padding: 5% 0px 0px 0px;
@@ -58,6 +79,13 @@ h1 {
 
 /* ----------------------------------- View Rules Button ----------------------------------- */
 
+a {
+    all: unset;
+    display: block;
+    cursor: pointer;
+    user-select: none;
+}
+
 #rulesButton {
     margin-top: 50px;
     width: 20%;
@@ -74,12 +102,8 @@ h1 {
     0% {
         margin-right: 5px;
     }
-    50% {
-        margin-right: 20px;
-    }
-
     100% {
-        margin-right: 5px;
+        margin-right: 20px;
     }
 }
 
@@ -87,25 +111,23 @@ h1 {
     0% {
         margin-left: 5px;
     }
-    50% {
-        margin-left: 20px;
-    }
-
     100% {
-        margin-left: 5px;
+        margin-left: 20px;
     }
 }
 
 #leftArrow {
     animation-name: leftArrowAnim;
-    animation-duration: 2s;
+    animation-duration: 1.3s;
+    animation-direction: alternate;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
 }
 
 #rightArrow {
     animation-name: rightArrowAnim;
-    animation-duration: 2s;
+    animation-duration: 1.3s;
+    animation-direction: alternate;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
 }

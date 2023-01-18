@@ -4,22 +4,30 @@
     <link id="cssLink" rel="stylesheet" href="./start.css"/>
 </head>
 <body>
-    <h1 class="toDelete">Welcome to 3D Tic Tac Toe<br/>Choose a player:</h1>
+    
+    <h1 id="title" class="toDelete">Welcome to 3D Tic Tac Toe<br/>Choose a player:</h1>
     <div id="playerSel" class="toDelete">
         <img id="XSel" src="images/X.png" class="toDelete" onclick="curPlayer='X';startGameLoop();"/>
         <img id="OSel" src="images/O.png" class="toDelete" onclick="curPlayer='O';startGameLoop();"/>
     </div>
 
-    <div id="rulesButton" class="toDelete">
+    <a href="rules.html" id="rulesButton" class="toDelete">
         <div><b id="leftArrow">></b></div>
         <div><h2>View Rules</h2></div>
         <div><b id="rightArrow"><</b></div>
-    </div>
-    <div id="winMes">
+    </a>
+
+    <!-- <div id="rulesButton" class="toDelete">
+        <div><b id="leftArrow">></b></div>
+        <div><h2>View Rules</h2></div>
+        <div><b id="rightArrow"><</b></div>
+    </div> -->
+
+    <div id="winner">
+        <b id="winMes">
+        </b>
     </div>
     <script src="scripts/start.js"></script>
-    <!-- <script src="tictactoe.js"></script> -->
-    <!-- <script src="3D.js"></script> -->
     <script src="scripts/three.js"></script>
 </body>
 </html>

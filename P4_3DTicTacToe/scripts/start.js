@@ -5,6 +5,7 @@ function startGameLoop() {
     for (let el of elsToDel) {
         el.remove();
     }
+    
     document.getElementById("cssLink").setAttribute("href", "style.css");
 
     let gameScript = document.createElement("script");

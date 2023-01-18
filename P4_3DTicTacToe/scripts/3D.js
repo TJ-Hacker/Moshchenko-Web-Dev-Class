@@ -4,20 +4,20 @@ const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-
 const raycaster = new THREE.Raycaster();
 raycaster.layers.set(5);
 const pointer = new THREE.Vector2();
-
 pointer.x = 1;
 pointer.y = 1;
+const groundLength = gridSize * 25;
+
 
 // Geometries
 
-const groundLength = gridSize * 25;
-
+// Used to detect mouse placement
 const colliderPlane = new THREE.BoxGeometry(groundLength, 0.05, groundLength);
 
+// Board lines
 const vert = new THREE.BoxGeometry(groundLength, 2, 2);
 vert.translate(0, 0, 12);
 const vert2 = new THREE.BoxGeometry(groundLength, 2, 2);
@@ -28,7 +28,7 @@ const hori2 = new THREE.BoxGeometry(2, 2, groundLength);
 hori2.translate(-12, 0, 0);
 
 
-const O_Geo = new THREE.TorusGeometry(8, 2, 12, 40);
+const O_Geo = new THREE.TorusGeometry(8, 2.5, 12, 40);
 O_Geo.rotateX(Math.PI / 2);
 
 // Materials
@@ -86,19 +86,8 @@ camera.rotation.x = -1 * Math.PI / 4;
 
 function animate() {
     requestAnimationFrame(animate);
-
-    // raycaster.setFromCamera( pointer, camera );
-    // const intersects = raycaster.intersectObjects( scene.children );
-
-    // if (intersects.length > 0) {
-    //     // console.log(`X: ${intersects[0].point.x}, Y: ${intersects[0].point.z}`);
-    //     console.log(clampPoint(intersects[0].point.x, intersects[0].point.z));
-    // }
-
     renderer.render(scene, camera);
 }
-animate();
-
 
 function onPointerMove( event ) {
 	pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -110,16 +99,21 @@ function shootRay(event) {
     const intersects = raycaster.intersectObjects( scene.children );
 
     if (intersects.length > 0) {
-        // console.log(`X: ${intersects[0].point.x}, Y: ${intersects[0].point.z}`);
-        // console.log();
         move(curPlayer, clampPoint(intersects[0].point.x, intersects[0].point.z));
     }
 }
+
+
+// The mouselock logic is used to prevent accidental plays
+mouseLock = 0;
 
 addEventListener("mousemove", (event) => {
     if (cont) {
         if (event.buttons === 1) {
             cameraMovement(event.movementX, event.movementY);
+            if (mouseLock === 1) {
+                mouseLock = -1;
+            }
         }
     }
 });
@@ -130,17 +124,19 @@ addEventListener("pointermove", (event) => {
     }
 });
 
-addEventListener("click", (event) => {
-    if (cont) {
+addEventListener("mouseup", (event) => {
+    if (mouseLock > 0 && cont) {
         shootRay(event);
-    }
+    } 
+    mouseLock = 0;
+});
+
+addEventListener("mousedown", (event) => {
+    mouseLock = 1;
 });
 
 function cameraMovement(movementX, movementY) {
-    // scene.rotation.y += movementX / 200;
-    // scene.rotation.x += movementY / 200;
     CameraFocalPoint.rotation.y += ((-1 * movementX / 500) % (Math.PI * 2));
-    // CameraFocalPoint.rotateX(-1 * movementY / 200);
     CameraFocalPoint.rotation.z = 0;
 }
 
@@ -186,7 +182,7 @@ function addPiece(player, tile, second=false) {
 function winAnimation() {
     id = setInterval(frame, 100);
     let messageCont = document.getElementById("winMes");
-    let message = "Congrats Player " + winner + ", you won!";
+    let message = "Congrats Player " + winner + ", you won! -- refresh to play again...";
     messageCont.style.display = "block";
     messageCont.innerHTML = "";
     let framePos = 0;
@@ -195,7 +191,6 @@ function winAnimation() {
             clearInterval(id);
         } else {
             framePos ++;
-            // console.log(message.slice(frame, frame + 2));
             messageCont.innerHTML += message.slice(framePos - 1, framePos);
         }
     }
@@ -219,3 +214,4 @@ function reset() {
 }
 
 reset();
+animate();

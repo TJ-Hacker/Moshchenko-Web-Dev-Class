@@ -3,7 +3,6 @@
 grid = [];
 lastMove = [];
 const gridSize = 3;
-curPlayer = "X";
 winner = -1;
 
 alert("Welcome to 2 Layered Tic Tac Toe! Click on the slot you want to place your piece, and drag the bottom of the screen to rotate the board. Refresh to restart");
@@ -23,20 +22,11 @@ function advance() {
         winAnimation();
     }
 
-    // curPlayer = (curPlayer === "X") ? "O" : "O";
-
-    // cpuMove();
+    
     if (curPlayer === "X") {
         curPlayer = "O";
     } else {
         curPlayer = "X";
-    }
-}
-
-function cpuMove(piece) {
-    let randMove = [Math.floor(Math.random(gridSize)), Math.floor(Math.random(gridSize))];
-    while (move(piece, randMove) === -1) {
-        randMove = [Math.floor(Math.random(gridSize)), Math.floor(Math.random(gridSize))];
     }
 }
 

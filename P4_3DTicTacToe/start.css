@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300&display=swap');
+
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Roboto Mono', serif;
+}
+
+@keyframes saturateEffect {
+    from {filter: saturate(10%);}
+    to {filter: saturate(100%);}
+}
+
+html {
+    overflow: hidden;
+}
+
+body {
+    height: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+h1 {
+    padding-top: 10%;
+    text-align: center;
+}
+
+
+/* ----------------------------------- Player Selection ----------------------------------- */
+
+#playerSel {
+    padding: 5% 0px 0px 0px;
+    width: 50%;
+    height: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#playerSel img {
+    filter: saturate(10%);
+    width: 40%;
+}
+
+#playerSel img:hover {
+    animation-timing-function: cubic-bezier(0.1, 0.1, 0.3. 0.9);
+    animation-name: saturateEffect;
+    filter: saturate(100%);
+    animation-duration: 0.3s;
+}
+
+/* ---------------------------------------------------------- */
+
+
+
+/* ----------------------------------- View Rules Button ----------------------------------- */
+
+#rulesButton {
+    margin-top: 50px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#rulesButton h2 {
+    margin: 0px;
+}
+
+@keyframes leftArrowAnim {
+    0% {
+        margin-right: 5px;
+    }
+    50% {
+        margin-right: 20px;
+    }
+
+    100% {
+        margin-right: 5px;
+    }
+}
+
+@keyframes rightArrowAnim {
+    0% {
+        margin-left: 5px;
+    }
+    50% {
+        margin-left: 20px;
+    }
+
+    100% {
+        margin-left: 5px;
+    }
+}
+
+#leftArrow {
+    animation-name: leftArrowAnim;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+#rightArrow {
+    animation-name: rightArrowAnim;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+/* ---------------------------------------------------------- */

@@ -204,7 +204,6 @@ function winAnimation() {
 function reset() {
     grid = [];
     lastMove = [];
-    curPlayer = "X";
     winner = -1;
     cont = true;
     for (let i = 0; i < gridSize; i ++) {

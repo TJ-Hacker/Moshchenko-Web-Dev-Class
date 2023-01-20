@@ -5,22 +5,35 @@ lastMove = [];
 const gridSize = 3;
 winner = -1;
 
+const PlaceClick = new Audio("audio/click.wav");
+
+const getRandomInt = (max) => {
+    return Math.floor(Math.random() * max);
+};
+
 function advance() {
     if (checkWinner("O") != -1 || checkWinner("X") != -1) {
-        if (checkWinner("O") != -1) {
-            winner = "O";
-        } else {
-            winner = "X";
-        }
+        winner = (checkWinner("O") === "O") ? "O" : "X";
     }
-    if (winner != -1) {
-        cont = false;
+
+    if (winner != -1 && cont) {
         winAnimation();
+        cont = false;
     }
-    if (curPlayer === "X") {
-        curPlayer = "O";
-    } else {
-        curPlayer = "X";
+
+    if (cont) {
+        if (curPlayer === "X") {
+            curPlayer = "O";
+        } else {
+            curPlayer = "X";
+        }
+    
+        if (curPlayer !== humanPlayer) {
+            let moveSuccess = move(curPlayer, [getRandomInt(3), getRandomInt(3)]);
+            while (moveSuccess === -1) {
+                moveSuccess = move(curPlayer, [getRandomInt(3), getRandomInt(3)]);
+            }
+        }
     }
 }
 
@@ -31,9 +44,12 @@ function move(player, tile) {
         return -1;
     }
 
+    console.log(tile);
+
     if (grid[tile[0]][tile[1]].length === 2) {
         return -1;
     }
+
     if (grid[tile[0]][tile[1]].length > 0) {
         grid[tile[0]][tile[1]][1] = player;
         second = true;

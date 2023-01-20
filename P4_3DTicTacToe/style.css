@@ -7,7 +7,6 @@
 
 body div {
     top: 40%;
-    /* font-family: 'Roboto', sans-serif; */
     font-size: 60px;
     width: 100%;
     color: white;
@@ -17,5 +16,4 @@ body div {
 #winner {
     position: absolute;
     text-align: center;
-    /* display: none; */
 }

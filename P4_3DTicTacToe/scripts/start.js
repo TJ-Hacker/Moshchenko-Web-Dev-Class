@@ -1,12 +1,13 @@
-curPlayer = "";
+curPlayer = "X";
+humanPlayer = "";
 
 function startGameLoop() {
-    let elsToDel = document.getElementsByClassName("toDelete");
+    let elsToDel = document.querySelectorAll(".toDelete");
     for (let el of elsToDel) {
         el.remove();
     }
     
-    document.getElementById("cssLink").setAttribute("href", "style.css");
+    document.querySelector("#cssLink").setAttribute("href", "style.css");
 
     let gameScript = document.createElement("script");
     gameScript.setAttribute("src", "scripts/tictactoe.js");
@@ -18,12 +19,18 @@ function startGameLoop() {
     document.body.appendChild(graphicsScript);
 
     // I'm doing this again because some of the elements still remain after the first time
-    elsToDel = document.getElementsByClassName("toDelete");
+    elsToDel = document.querySelectorAll(".toDelete");
     for (let el of elsToDel) {
         el.remove();
     }
 }
 
-function reset() {
-    
+function showRules() {
+    document.querySelector("#rulesModal").style.display = "block";
 }
+
+function hideRules() {
+    document.querySelector("#rulesModal").style.display = "none";
+}
+
+hideRules();

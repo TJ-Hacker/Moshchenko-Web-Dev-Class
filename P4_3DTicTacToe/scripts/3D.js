@@ -41,14 +41,12 @@ invis_Mat.transparent = true;
 invis_Mat.opacity = 0.1;
 
 O_Mat.flatShading = true;
-// O_Mat.transparent = true;
-// O_Mat.opacity = 0.4;
 
 // Lighting
 const mainPointL = new THREE.PointLight(0xffffff, 1, 100); // Main Lighting
 mainPointL.position.set(0, 30, 10);
 
-const light = new THREE.AmbientLight(0x404040, 0.5); // Ambient Lighting
+const light = new THREE.AmbientLight(0x404040, 0.5); // Some Light Ambient Lighting
 
 // Meshes
 
@@ -94,12 +92,12 @@ function onPointerMove( event ) {
 	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 }
 
-function shootRay(event) {
+function shootRay() {
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( scene.children );
 
     if (intersects.length > 0) {
-        move(curPlayer, clampPoint(intersects[0].point.x, intersects[0].point.z));
+        move(humanPlayer, clampPoint(intersects[0].point.x, intersects[0].point.z));
     }
 }
 
@@ -110,7 +108,7 @@ mouseLock = 0;
 addEventListener("mousemove", (event) => {
     if (cont) {
         if (event.buttons === 1) {
-            cameraMovement(event.movementX, event.movementY);
+            cameraMovement(event.movementX);
             if (mouseLock === 1) {
                 mouseLock = -1;
             }
@@ -126,16 +124,16 @@ addEventListener("pointermove", (event) => {
 
 addEventListener("mouseup", (event) => {
     if (mouseLock > 0 && cont) {
-        shootRay(event);
+        shootRay();
     } 
     mouseLock = 0;
 });
 
-addEventListener("mousedown", (event) => {
+addEventListener("mousedown", () => {
     mouseLock = 1;
 });
 
-function cameraMovement(movementX, movementY) {
+function cameraMovement(movementX) {
     CameraFocalPoint.rotation.y += ((-1 * movementX / 500) % (Math.PI * 2));
     CameraFocalPoint.rotation.z = 0;
 }
@@ -147,6 +145,7 @@ function clampPoint(pointX, pointY) {
 }
 
 function addPiece(player, tile, second=false) {
+    PlaceClick.play();
     if (player === "X") {
         let piece = new THREE.Object3D();
 
@@ -182,7 +181,7 @@ function addPiece(player, tile, second=false) {
 function winAnimation() {
     id = setInterval(frame, 100);
     let messageCont = document.getElementById("winMes");
-    let message = "Congrats Player " + winner + ", you won! -- refresh to play again...";
+    let message = `Congrats Player ${winner}, you won! -- refresh to play again...`;
     messageCont.style.display = "block";
     messageCont.innerHTML = "";
     let framePos = 0;
@@ -208,10 +207,12 @@ function reset() {
         }
     }
 
-    // while(scene.children.length > 0){ 
-    //     scene.remove(scene.children[0]); 
-    // }
+    return -1;
 }
 
-reset();
+goAhead = reset();
 animate();
+
+if (humanPlayer == "O") {
+    move("X", [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)]);
+}

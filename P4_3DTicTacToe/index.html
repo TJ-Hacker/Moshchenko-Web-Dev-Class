@@ -7,22 +7,30 @@
     
     <h1 id="title" class="toDelete">Welcome to 3D Tic Tac Toe<br/>Choose a player:</h1>
     <div id="playerSel" class="toDelete">
-        <img id="XSel" src="images/X.png" class="toDelete" onclick="curPlayer='X';startGameLoop();"/>
-        <img id="OSel" src="images/O.png" class="toDelete" onclick="curPlayer='O';startGameLoop();"/>
+        <img id="XSel" src="images/X.png" class="toDelete" onclick="humanPlayer='X';startGameLoop();"/>
+        <img id="OSel" src="images/O.png" class="toDelete" onclick="humanPlayer='O';startGameLoop();"/>
     </div>
 
-    <a href="rules.html" id="rulesButton" class="toDelete">
+    <div id="rulesButton" class="toDelete" onclick="showRules();">
         <div><b id="leftArrow">></b></div>
         <div><h2>View Rules</h2></div>
         <div><b id="rightArrow"><</b></div>
-    </a>
+    </div>
 
-    <!-- <div id="rulesButton" class="toDelete">
-        <div><b id="leftArrow">></b></div>
-        <div><h2>View Rules</h2></div>
-        <div><b id="rightArrow"><</b></div>
-    </div> -->
-
+    <div id="rulesModal">
+        <div id="rulesTop"><h3>Rules:</h3><span onclick="hideRules();">X</span></div>
+        <ul>
+            <li><p>This is Tic Tac Toe, but with two layers.</p></li>
+            <li><p>You can lock spaces by placing your piece over your own piece</p></li>
+            <li><p>You can block the computer's spaces by placing your piece over theirs</p></li>
+            <li><p>When it's your turn, you can only choose a space...</p><ul>
+                <li><p>&emsp;that's completely empty</p></li>
+                <li><p>&emsp;where you have a piece on the first layer</p></li>
+                <li><p>&emsp;where the computer placed a piece on the first layer, and it wasn't placed there on the last move the computer made</p></li>
+            </ul></li>
+        </ul>
+    </div>
+    
     <div id="winner">
         <b id="winMes">
         </b>
